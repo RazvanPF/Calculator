@@ -1,7 +1,9 @@
 class Calculator {
-  constructor(previousOperandTextElement, currentOperandTextElement) {
+  constructor(previousOperandTextElement, currentOperandTextElement, historyListElement) {
     this.previousOperandTextElement = previousOperandTextElement;
     this.currentOperandTextElement = currentOperandTextElement;
+    this.historyListElement = historyListElement;
+    this.history = [];
     this.clear();
   }
 
@@ -16,6 +18,7 @@ class Calculator {
   }
 
   appendNumber(number) {
+    if (this.currentOperand.length >= 16) return;
     if (number === "." && this.currentOperand.includes(".")) return;
     this.currentOperand = this.currentOperand.toString() + number.toString();
   }
@@ -51,6 +54,7 @@ class Calculator {
       default:
         return;
     }
+    this.addToHistory(`${this.previousOperand} ${this.operation} ${this.currentOperand} = ${computation}`);
     this.currentOperand = computation;
     this.operation = undefined;
     this.previousOperand = "";
@@ -76,62 +80,94 @@ class Calculator {
   }
 
   updateDisplay() {
-    this.currentOperandTextElement.innerText = this.getDisplayNumber(
-      this.currentOperand
-    );
+    this.currentOperandTextElement.innerText = this.getDisplayNumber(this.currentOperand);
     if (this.operation != null) {
-      this.previousOperandTextElement.innerText = `${this.getDisplayNumber(
-        this.previousOperand
-      )} ${this.operation}`;
+      this.previousOperandTextElement.innerText = `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`;
     } else {
       this.previousOperandTextElement.innerText = "";
     }
   }
+
+  addToHistory(entry) {
+    this.history.push(entry);
+    if (this.history.length > 10) {
+      this.history.shift();
+    }
+    this.updateHistory();
+  }
+
+  updateHistory() {
+    this.historyListElement.innerHTML = "";
+    this.history.forEach(entry => {
+      const li = document.createElement("li");
+      li.innerText = entry;
+      this.historyListElement.appendChild(li);
+    });
+  }
 }
 
 const numberButtons = document.querySelectorAll("[data-number]");
-const operationButtons = document.querySelectorAll("[data-operation");
-const equalsButton = document.querySelector("[data-equals");
-const deleteButton = document.querySelector("[data-delete");
-const allClearButton = document.querySelector("[data-all-clear");
-const previousOperandTextElement = document.querySelector(
-  "[data-previous-operand"
-);
-const currentOperandTextElement = document.querySelector(
-  "[data-current-operand"
-);
+const operationButtons = document.querySelectorAll("[data-operation]");
+const equalsButton = document.querySelector("[data-equals]");
+const deleteButton = document.querySelector("[data-delete]");
+const allClearButton = document.querySelector("[data-all-clear]");
+const previousOperandTextElement = document.querySelector("[data-previous-operand]");
+const currentOperandTextElement = document.querySelector("[data-current-operand]");
+const historyListElement = document.querySelector("[data-history]");
 
-const calculator = new Calculator(
-  previousOperandTextElement,
-  currentOperandTextElement
-);
+const calculator = new Calculator(previousOperandTextElement, currentOperandTextElement, historyListElement);
 
-numberButtons.forEach((button) => {
+numberButtons.forEach(button => {
   button.addEventListener("click", () => {
     calculator.appendNumber(button.innerText);
     calculator.updateDisplay();
   });
 });
 
-operationButtons.forEach((button) => {
+operationButtons.forEach(button => {
   button.addEventListener("click", () => {
     calculator.chooseOperation(button.innerText);
     calculator.updateDisplay();
   });
 });
 
-equalsButton.addEventListener("click", (button) => {
+equalsButton.addEventListener("click", button => {
   calculator.compute();
   calculator.updateDisplay();
 });
 
-allClearButton.addEventListener("click", (button) => {
+allClearButton.addEventListener("click", button => {
   calculator.clear();
   calculator.updateDisplay();
 });
 
-deleteButton.addEventListener("click", (button) => {
+deleteButton.addEventListener("click", button => {
   calculator.delete();
   calculator.updateDisplay();
+});
+
+document.addEventListener("keydown", event => {
+  if ((event.key >= "0" && event.key <= "9") || event.key === ".") {
+    calculator.appendNumber(event.key);
+    calculator.updateDisplay();
+  }
+  if (event.key === "+" || event.key === "-" || event.key === "*" || event.key === "/") {
+    const operationKey = event.key === "/" ? "÷" : event.key;
+    calculator.chooseOperation(operationKey);
+    calculator.updateDisplay();
+  }
+  if (event.key === "Enter" || event.key === "=") {
+    event.preventDefault(); // Prevent default behavior
+    calculator.compute();
+    calculator.updateDisplay();
+  }
+  if (event.key === "Backspace") {
+    calculator.delete();
+    calculator.updateDisplay();
+  }
+  if (event.key === "Escape") {
+    calculator.clear();
+    calculator.updateDisplay();
+  }
 });
 
