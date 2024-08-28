@@ -1,0 +1,56 @@
+# Web Calculator
+
+Web Calculator is a responsive, browser-based calculator that offers a simple and intuitive interface for performing basic arithmetic operations. It also includes a history feature to keep track of your calculations.
+
+## Features
+
+- **Basic Arithmetic Operations**: 
+  - Perform addition, subtraction, multiplication, and division.
+  - Supports decimal numbers and operations up to 16 digits.
+
+- **Interactive History**: 
+  - Displays your last 10 calculations in a scrollable list, allowing you to track your recent operations.
+  - Automatically updates with each calculation.
+
+- **Responsive Design**: 
+  - Fully responsive layout that adapts to various screen sizes, making it usable on both desktop and mobile devices.
+  
+- **Keyboard Support**: 
+  - Supports keyboard input for numbers, operations, and special keys such as Enter, Backspace, and Escape.
+
+## Controls
+
+- **Buttons**: 
+  - Click the buttons on the calculator to input numbers and operations.
+  - Use the "AC" button to clear all input, the "DEL" button to delete the last digit, and the "=" button to compute the result.
+
+- **Keyboard Shortcuts**: 
+  - Numbers (0-9) and the decimal point (.) can be entered directly from the keyboard.
+  - Operations (`+`, `-`, `*`, `/`) can be input using their respective keys (`/` becomes `÷`).
+  - Press `Enter` or `=` to compute the result, `Backspace` to delete the last digit, and `Escape` to clear the current input.
+
+## Layout
+
+- **Calculator Grid**: 
+  - The main interface consists of a 4x5 grid with large, easy-to-click buttons.
+  - The output screen shows the current and previous operands and the selected operation.
+
+- **History Section**: 
+  - A side panel displays a scrollable list of the last 10 calculations.
+
+## Styling
+
+- **Clean and Modern Design**: 
+  - Uses a soothing gradient background and semi-transparent buttons.
+  - The output display is designed with high contrast for better readability.
+  - Responsive design adjusts the layout and button sizes for smaller screens.
+
+# License
+- This project is open source, feel free to use it as you wish.
+
+# Developer
+Razvan Faraon
+
+For any questions or support, feel free to reach out via [farirazvan@gmail.com].
+
+Enjoy using the Web Calculator and keep track of your calculations with ease!
